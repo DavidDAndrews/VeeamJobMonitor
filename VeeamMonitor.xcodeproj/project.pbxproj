@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BA8125492F73811A00CEC510 /* VeeamAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8125482F73811A00CEC510 /* VeeamAPIService.swift */; };
+		BA81254B2F73812700CEC510 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81254A2F73812700CEC510 /* LoginView.swift */; };
+		BA81254D2F73813E00CEC510 /* JobsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81254C2F73813E00CEC510 /* JobsListView.swift */; };
+		DD00000100000000000000A1 /* VeeamMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00000200000000000000A2 /* VeeamMonitorTests.swift */; };
+		EE00000100000000000000B1 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000200000000000000B2 /* Formatters.swift */; };
+		EE00000300000000000000B3 /* HTMLReportGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000400000000000000B4 /* HTMLReportGenerator.swift */; };
+		EE00000500000000000000B5 /* JobResultClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000600000000000000B6 /* JobResultClassification.swift */; };
+		EE00000700000000000000B7 /* JobDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000800000000000000B8 /* JobDetailView.swift */; };
+		EE00000900000000000000B9 /* JobRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000A00000000000000BA /* JobRowView.swift */; };
+		EE00000B00000000000000BB /* VeeamModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000C00000000000000BC /* VeeamModels.swift */; };
+		EE00000D00000000000000BD /* StringFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00000E00000000000000BE /* StringFormatting.swift */; };
+		EE00000F00000000000000BF /* CertificateTrustStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001000000000000000C0 /* CertificateTrustStore.swift */; };
+		EE00001100000000000000C1 /* VeeamAPIDTOs.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001200000000000000C2 /* VeeamAPIDTOs.swift */; };
+		EE00001300000000000000C3 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001400000000000000C4 /* DesignTokens.swift */; };
+		EE00001500000000000000C5 /* ServerReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001600000000000000C6 /* ServerReachability.swift */; };
+		EE00001700000000000000C7 /* JobRuntimeEstimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001800000000000000C8 /* JobRuntimeEstimation.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DD00000A00000000000000AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BA81252A2F737D2300CEC510 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BA8125312F737D2300CEC510;
+			remoteInfo = VeeamMonitor;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BA8125322F737D2300CEC510 /* VeeamMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VeeamMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA8125482F73811A00CEC510 /* VeeamAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeeamAPIService.swift; sourceTree = "<group>"; };
+		BA81254A2F73812700CEC510 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		BA81254C2F73813E00CEC510 /* JobsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsListView.swift; sourceTree = "<group>"; };
+		DD00000200000000000000A2 /* VeeamMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeeamMonitorTests.swift; sourceTree = "<group>"; };
+		DD00000300000000000000A3 /* VeeamMonitorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VeeamMonitorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE00000200000000000000B2 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		EE00000400000000000000B4 /* HTMLReportGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLReportGenerator.swift; sourceTree = "<group>"; };
+		EE00000600000000000000B6 /* JobResultClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobResultClassification.swift; sourceTree = "<group>"; };
+		EE00000800000000000000B8 /* JobDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobDetailView.swift; sourceTree = "<group>"; };
+		EE00000A00000000000000BA /* JobRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobRowView.swift; sourceTree = "<group>"; };
+		EE00000C00000000000000BC /* VeeamModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeeamModels.swift; sourceTree = "<group>"; };
+		EE00000E00000000000000BE /* StringFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringFormatting.swift; sourceTree = "<group>"; };
+		EE00001000000000000000C0 /* CertificateTrustStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificateTrustStore.swift; sourceTree = "<group>"; };
+		EE00001200000000000000C2 /* VeeamAPIDTOs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeeamAPIDTOs.swift; sourceTree = "<group>"; };
+		EE00001400000000000000C4 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
+		EE00001600000000000000C6 /* ServerReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerReachability.swift; sourceTree = "<group>"; };
+		EE00001800000000000000C8 /* JobRuntimeEstimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobRuntimeEstimation.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		BA8125342F737D2300CEC510 /* VeeamMonitor */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = VeeamMonitor;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BA81252F2F737D2300CEC510 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BA8125292F737D2300CEC510 = {
+			isa = PBXGroup;
+			children = (
+				BA8125342F737D2300CEC510 /* VeeamMonitor */,
+				BA8125332F737D2300CEC510 /* Products */,
+				BA8125482F73811A00CEC510 /* VeeamAPIService.swift */,
+				BA81254A2F73812700CEC510 /* LoginView.swift */,
+				BA81254C2F73813E00CEC510 /* JobsListView.swift */,
+				EE00000200000000000000B2 /* Formatters.swift */,
+				EE00000400000000000000B4 /* HTMLReportGenerator.swift */,
+				EE00000600000000000000B6 /* JobResultClassification.swift */,
+				EE00000800000000000000B8 /* JobDetailView.swift */,
+				EE00000A00000000000000BA /* JobRowView.swift */,
+				EE00000C00000000000000BC /* VeeamModels.swift */,
+				EE00000E00000000000000BE /* StringFormatting.swift */,
+				EE00001000000000000000C0 /* CertificateTrustStore.swift */,
+				EE00001200000000000000C2 /* VeeamAPIDTOs.swift */,
+				EE00001400000000000000C4 /* DesignTokens.swift */,
+				EE00001600000000000000C6 /* ServerReachability.swift */,
+				EE00001800000000000000C8 /* JobRuntimeEstimation.swift */,
+				DD00000400000000000000A4 /* ../Tests */,
+			);
+			sourceTree = "<group>";
+		};
+		BA8125332F737D2300CEC510 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BA8125322F737D2300CEC510 /* VeeamMonitor.app */,
+				DD00000300000000000000A3 /* VeeamMonitorTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD00000400000000000000A4 /* ../Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DD00000200000000000000A2 /* VeeamMonitorTests.swift */,
+			);
+			path = ../Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BA8125312F737D2300CEC510 /* VeeamMonitor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA81253D2F737D2400CEC510 /* Build configuration list for PBXNativeTarget "VeeamMonitor" */;
+			buildPhases = (
+				BA81252E2F737D2300CEC510 /* Sources */,
+				BA81252F2F737D2300CEC510 /* Frameworks */,
+				BA8125302F737D2300CEC510 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BA8125342F737D2300CEC510 /* VeeamMonitor */,
+			);
+			name = VeeamMonitor;
+			packageProductDependencies = (
+			);
+			productName = VeeamMonitor;
+			productReference = BA8125322F737D2300CEC510 /* VeeamMonitor.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DD00000600000000000000A6 /* VeeamMonitorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD00000700000000000000A7 /* Build configuration list for PBXNativeTarget "VeeamMonitorTests" */;
+			buildPhases = (
+				DD00000500000000000000A5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD00000B00000000000000AB /* PBXTargetDependency */,
+			);
+			name = VeeamMonitorTests;
+			packageProductDependencies = (
+			);
+			productName = VeeamMonitorTests;
+			productReference = DD00000300000000000000A3 /* VeeamMonitorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BA81252A2F737D2300CEC510 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2630;
+				LastUpgradeCheck = 2640;
+				TargetAttributes = {
+					BA8125312F737D2300CEC510 = {
+						CreatedOnToolsVersion = 26.3;
+						LastSwiftMigration = 2630;
+					};
+					DD00000600000000000000A6 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = BA8125312F737D2300CEC510;
+					};
+				};
+			};
+			buildConfigurationList = BA81252D2F737D2300CEC510 /* Build configuration list for PBXProject "VeeamMonitor" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BA8125292F737D2300CEC510;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BA8125332F737D2300CEC510 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BA8125312F737D2300CEC510 /* VeeamMonitor */,
+				DD00000600000000000000A6 /* VeeamMonitorTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BA8125302F737D2300CEC510 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BA81252E2F737D2300CEC510 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA81254B2F73812700CEC510 /* LoginView.swift in Sources */,
+				BA81254D2F73813E00CEC510 /* JobsListView.swift in Sources */,
+				BA8125492F73811A00CEC510 /* VeeamAPIService.swift in Sources */,
+				EE00000100000000000000B1 /* Formatters.swift in Sources */,
+				EE00000300000000000000B3 /* HTMLReportGenerator.swift in Sources */,
+				EE00000500000000000000B5 /* JobResultClassification.swift in Sources */,
+				EE00000700000000000000B7 /* JobDetailView.swift in Sources */,
+				EE00000900000000000000B9 /* JobRowView.swift in Sources */,
+				EE00000B00000000000000BB /* VeeamModels.swift in Sources */,
+				EE00000D00000000000000BD /* StringFormatting.swift in Sources */,
+				EE00000F00000000000000BF /* CertificateTrustStore.swift in Sources */,
+				EE00001100000000000000C1 /* VeeamAPIDTOs.swift in Sources */,
+				EE00001300000000000000C3 /* DesignTokens.swift in Sources */,
+				EE00001500000000000000C5 /* ServerReachability.swift in Sources */,
+				EE00001700000000000000C7 /* JobRuntimeEstimation.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD00000500000000000000A5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD00000100000000000000A1 /* VeeamMonitorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD00000B00000000000000AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BA8125312F737D2300CEC510 /* VeeamMonitor */;
+			targetProxy = DD00000A00000000000000AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		BA81253B2F737D2400CEC510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 8DF59KW64R;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BA81253C2F737D2400CEC510 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 8DF59KW64R;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		BA81253E2F737D2400CEC510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				AUTOMATION_APPLE_EVENTS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = VeeamMonitor/VeeamMonitor.entitlements;
+				INFOPLIST_FILE = VeeamMonitor/Info.plist;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 17;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Veeam Monitor";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = bz.andrews.VeeamMonitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = NO;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BA81253F2F737D2400CEC510 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				AUTOMATION_APPLE_EVENTS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = VeeamMonitor/VeeamMonitor.entitlements;
+				INFOPLIST_FILE = VeeamMonitor/Info.plist;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 17;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Veeam Monitor";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.3;
+				PRODUCT_BUNDLE_IDENTIFIER = bz.andrews.VeeamMonitor;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = NO;
+				RUNTIME_EXCEPTION_ALLOW_DYLD_ENVIRONMENT_VARIABLES = NO;
+				RUNTIME_EXCEPTION_ALLOW_JIT = NO;
+				RUNTIME_EXCEPTION_ALLOW_UNSIGNED_EXECUTABLE_MEMORY = NO;
+				RUNTIME_EXCEPTION_DEBUGGING_TOOL = NO;
+				RUNTIME_EXCEPTION_DISABLE_EXECUTABLE_PAGE_PROTECTION = NO;
+				RUNTIME_EXCEPTION_DISABLE_LIBRARY_VALIDATION = NO;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		DD00000800000000000000A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bz.andrews.VeeamMonitorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VeeamMonitor.app/Contents/MacOS/VeeamMonitor";
+			};
+			name = Debug;
+		};
+		DD00000900000000000000A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = bz.andrews.VeeamMonitorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VeeamMonitor.app/Contents/MacOS/VeeamMonitor";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BA81252D2F737D2300CEC510 /* Build configuration list for PBXProject "VeeamMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA81253B2F737D2400CEC510 /* Debug */,
+				BA81253C2F737D2400CEC510 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BA81253D2F737D2400CEC510 /* Build configuration list for PBXNativeTarget "VeeamMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA81253E2F737D2400CEC510 /* Debug */,
+				BA81253F2F737D2400CEC510 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD00000700000000000000A7 /* Build configuration list for PBXNativeTarget "VeeamMonitorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD00000800000000000000A8 /* Debug */,
+				DD00000900000000000000A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BA81252A2F737D2300CEC510 /* Project object */;
+}
