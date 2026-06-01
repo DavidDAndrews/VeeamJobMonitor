@@ -885,12 +885,7 @@ struct HTMLReportGenerator {
     }()
 
     private func escapeHTML(_ input: String) -> String {
-        input
-            .replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
-            .replacingOccurrences(of: "\"", with: "&quot;")
-            .replacingOccurrences(of: "'", with: "&#39;")
+        input.htmlEscaped
     }
 }
 
