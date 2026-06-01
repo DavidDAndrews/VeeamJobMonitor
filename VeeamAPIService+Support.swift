@@ -6,6 +6,64 @@ import AppKit
 #endif
 
 extension VeeamAPIService {
+    // MARK: - Launch and connectivity
+
+    /// Warms saved-connection keychain reads during the splash screen.
+    func prepareForLaunch() {
+        _ = savedConnectionURLs()
+        _ = loadSavedCredentials()
+    }
+
+    var connectedServerDisplayName: String {
+        if let friendly = currentServerFriendlyName?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !friendly.isEmpty {
+            return friendly.uppercased()
+        }
+        if !serverURL.isEmpty,
+           let savedFriendly = loadSavedCredentials(for: serverURL)?.friendlyName?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !savedFriendly.isEmpty {
+            return savedFriendly.uppercased()
+        }
+        guard !serverURL.isEmpty else { return "Not Connected" }
+        if let url = URL(string: serverURL), let host = url.host, !host.isEmpty {
+            return host
+        }
+        return serverURL
+            .replacingOccurrences(of: "https://", with: "")
+            .replacingOccurrences(of: "http://", with: "")
+    }
+
+    /// Lightweight connectivity probe used by the login form.
+    /// Returns true when the host is reachable over HTTP(S), regardless of auth status code.
+    func canReachServer(_ serverURL: String) async -> Bool {
+        await checkServerReachability(serverURL) == .reachable
+    }
+
+    func checkServerReachability(_ serverURL: String, definitive: Bool = false) async -> ReachabilityStatus {
+        if definitive {
+            return await checkServerReachabilityForLogin(serverURL)
+        }
+
+        let trimmed = serverURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return .unknown }
+
+        let normalized = normalisedServerURL(trimmed)
+        if let status = await ServerReachabilityProbe.shared.check(serverURL: trimmed, normalized: normalized) {
+            return status
+        }
+        // Superseded by a newer probe; treat as still checking for callers that need a definite answer.
+        return .checking
+    }
+
+    /// Definitive reachability check for login — not dropped when the UI schedules a newer probe.
+    func checkServerReachabilityForLogin(_ serverURL: String) async -> ReachabilityStatus {
+        let trimmed = serverURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return .unknown }
+
+        let normalized = normalisedServerURL(trimmed)
+        return await ServerReachabilityProbe.shared.checkForLogin(serverURL: trimmed, normalized: normalized)
+    }
+
     // MARK: - Date decoder
 
     func makeDecoder() -> JSONDecoder {
