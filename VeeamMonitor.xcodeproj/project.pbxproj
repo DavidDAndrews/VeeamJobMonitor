@@ -23,6 +23,10 @@
 		EE00001300000000000000C3 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001400000000000000C4 /* DesignTokens.swift */; };
 		EE00001500000000000000C5 /* ServerReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001600000000000000C6 /* ServerReachability.swift */; };
 		EE00001700000000000000C7 /* JobRuntimeEstimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001800000000000000C8 /* JobRuntimeEstimation.swift */; };
+		FF00002900000000000000E9 /* VeeamAPIService+Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002800000000000000E8 /* VeeamAPIService+Authentication.swift */; };
+		FF00002B00000000000000EB /* VeeamAPIService+Jobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002A00000000000000EA /* VeeamAPIService+Jobs.swift */; };
+		FF00002D00000000000000ED /* VeeamAPIService+FetchHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */; };
+		FF00002F00000000000000EF /* VeeamAPIService+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002E00000000000000EE /* VeeamAPIService+Support.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +58,10 @@
 		EE00001400000000000000C4 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
 		EE00001600000000000000C6 /* ServerReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerReachability.swift; sourceTree = "<group>"; };
 		EE00001800000000000000C8 /* JobRuntimeEstimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobRuntimeEstimation.swift; sourceTree = "<group>"; };
+		FF00002800000000000000E8 /* VeeamAPIService+Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+Authentication.swift"; sourceTree = "<group>"; };
+		FF00002A00000000000000EA /* VeeamAPIService+Jobs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+Jobs.swift"; sourceTree = "<group>"; };
+		FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+FetchHelpers.swift"; sourceTree = "<group>"; };
+		FF00002E00000000000000EE /* VeeamAPIService+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+Support.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -95,6 +103,10 @@
 				EE00001400000000000000C4 /* DesignTokens.swift */,
 				EE00001600000000000000C6 /* ServerReachability.swift */,
 				EE00001800000000000000C8 /* JobRuntimeEstimation.swift */,
+				FF00002800000000000000E8 /* VeeamAPIService+Authentication.swift */,
+				FF00002A00000000000000EA /* VeeamAPIService+Jobs.swift */,
+				FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */,
+				FF00002E00000000000000EE /* VeeamAPIService+Support.swift */,
 				DD00000400000000000000A4 /* ../Tests */,
 			);
 			sourceTree = "<group>";
@@ -229,6 +241,10 @@
 				EE00001300000000000000C3 /* DesignTokens.swift in Sources */,
 				EE00001500000000000000C5 /* ServerReachability.swift in Sources */,
 				EE00001700000000000000C7 /* JobRuntimeEstimation.swift in Sources */,
+				FF00002900000000000000E9 /* VeeamAPIService+Authentication.swift in Sources */,
+				FF00002B00000000000000EB /* VeeamAPIService+Jobs.swift in Sources */,
+				FF00002D00000000000000ED /* VeeamAPIService+FetchHelpers.swift in Sources */,
+				FF00002F00000000000000EF /* VeeamAPIService+Support.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
