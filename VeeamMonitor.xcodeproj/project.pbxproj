@@ -135,7 +135,7 @@
 				FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */,
 				FF00002E00000000000000EE /* VeeamAPIService+Support.swift */,
 				FF00003000000000000000F0 /* LiquidGlass.swift */,
-				DD00000400000000000000A4 /* ../Tests */,
+				DD00000400000000000000A4 /* Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,12 +148,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DD00000400000000000000A4 /* ../Tests */ = {
+		DD00000400000000000000A4 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				DD00000200000000000000A2 /* VeeamMonitorTests.swift */,
 			);
-			path = ../Tests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -533,11 +533,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGNING_ALLOWED = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 17;
+				DEVELOPMENT_TEAM = 8DF59KW64R;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = bz.andrews.VeeamMonitorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -553,11 +555,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGNING_ALLOWED = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGNING_ALLOWED = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 17;
+				DEVELOPMENT_TEAM = 8DF59KW64R;
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 14.6;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = bz.andrews.VeeamMonitorTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
