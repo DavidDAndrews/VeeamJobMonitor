@@ -128,7 +128,7 @@ struct LoginView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .contentShape(RoundedRectangle(cornerRadius: Theme.Radius.small))
                 }
-                .buttonStyle(HoverLiftButtonStyle())
+                .buttonStyle(ThemeHoverButtonStyle(variant: .brand))
                 .frame(maxWidth: .infinity, minHeight: 44, maxHeight: 44)
                 .disabled(api.isLoading || serverURL.isEmpty || username.isEmpty || password.isEmpty)
                 .keyboardShortcut(.return, modifiers: [])
@@ -146,11 +146,7 @@ struct LoginView: View {
             }
         }
         .padding(28)
-        .background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.Radius.large))
-        .overlay(
-            RoundedRectangle(cornerRadius: Theme.Radius.large)
-                .stroke(Theme.separator, lineWidth: 0.5)
-        )
+        .themeGlassPanel(cornerRadius: Theme.Radius.large)
         .themeShadow(Theme.shadowSubtle)
         .overlay(alignment: .topTrailing) {
             Button(action: { isDarkModeEnabled.toggle() }) {
@@ -158,7 +154,7 @@ struct LoginView: View {
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(Theme.textSecondary)
                     .frame(width: 28, height: 28)
-                    .background(Theme.brandTint, in: RoundedRectangle(cornerRadius: Theme.Radius.small))
+                    .themeGlassChip(cornerRadius: Theme.Radius.small)
             }
             .buttonStyle(.plain)
             .help(isDarkModeEnabled ? "Switch to light mode." : "Switch to dark mode.")
@@ -452,31 +448,5 @@ private struct LabeledSecureField: View {
                 .textFieldStyle(.roundedBorder)
                 .help("\(label).")
         }
-    }
-}
-
-private struct HoverLiftButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        HoverLiftButtonBody(configuration: configuration)
-    }
-}
-
-private struct HoverLiftButtonBody: View {
-    let configuration: ButtonStyle.Configuration
-    @State private var isHovered = false
-
-    var body: some View {
-        configuration.label
-            .overlay(
-                RoundedRectangle(cornerRadius: Theme.Radius.small)
-                    .fill(Color.white.opacity(isHovered ? 0.10 : 0.0))
-            )
-            .shadow(color: .black.opacity(isHovered ? 0.20 : 0.12), radius: isHovered ? 8 : 3, x: 0, y: isHovered ? 5 : 2)
-            .scaleEffect(configuration.isPressed ? 0.98 : (isHovered ? 1.01 : 1.0))
-            .animation(.easeOut(duration: 0.14), value: isHovered)
-            .animation(.easeOut(duration: 0.08), value: configuration.isPressed)
-            .onHover { hovering in
-                isHovered = hovering
-            }
     }
 }

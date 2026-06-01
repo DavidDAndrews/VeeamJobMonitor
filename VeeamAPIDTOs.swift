@@ -745,11 +745,13 @@ struct VeeamErrorResponse: Decodable {
     let errorCode: String?
     let message: String?
     let resourceId: String?
+    let errors: [String]?
 
     enum CodingKeys: String, CodingKey {
         case errorCode
         case message
         case resourceId = "resourceId"
+        case errors
     }
 }
 

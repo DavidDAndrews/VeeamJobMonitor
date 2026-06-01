@@ -128,15 +128,82 @@ extension View {
     }
 }
 
-// MARK: - Typography helpers
+// MARK: - Shared hover button styles
 
-extension Theme {
-    enum Typography {
-        static let title = Font.title2.weight(.bold)
-        static let sectionHeader = Font.footnote.weight(.semibold)
-        static let body = Font.callout
-        static let caption = Font.caption
-        static let monospacedNumeric = Font.callout.monospacedDigit()
+struct ThemeHoverButtonStyle: ButtonStyle {
+    enum Variant {
+        case toolbar
+        case brand
+    }
+
+    var variant: Variant = .toolbar
+
+    func makeBody(configuration: Configuration) -> some View {
+        ThemeHoverButtonBody(configuration: configuration, variant: variant)
+    }
+}
+
+private struct ThemeHoverButtonBody: View {
+    let configuration: ButtonStyle.Configuration
+    let variant: ThemeHoverButtonStyle.Variant
+    @State private var isHovered = false
+
+    var body: some View {
+        configuration.label
+            .padding(variant == .toolbar ? EdgeInsets(top: 4, leading: 6, bottom: 4, trailing: 6) : EdgeInsets())
+            .modifier(ToolbarChromeModifier(variant: variant, isHovered: isHovered))
+            .shadow(
+                color: brandShadowColor,
+                radius: brandShadowRadius,
+                x: 0,
+                y: brandShadowY
+            )
+            .overlay(brandHoverOverlay)
+            .scaleEffect(scale)
+            .animation(.easeOut(duration: 0.14), value: isHovered)
+            .animation(.easeOut(duration: 0.08), value: configuration.isPressed)
+            .onHover { hovering in
+                isHovered = hovering
+            }
+    }
+
+    @ViewBuilder
+    private var brandHoverOverlay: some View {
+        if variant == .brand {
+            RoundedRectangle(cornerRadius: Theme.Radius.small)
+                .fill(Color.white.opacity(isHovered ? 0.10 : 0.0))
+        }
+    }
+
+    private var scale: CGFloat {
+        if configuration.isPressed { return variant == .toolbar ? 0.96 : 0.98 }
+        return isHovered ? (variant == .toolbar ? 1.02 : 1.01) : 1.0
+    }
+
+    private var brandShadowColor: Color {
+        variant == .brand ? Color.black.opacity(isHovered ? 0.20 : 0.12) : .clear
+    }
+
+    private var brandShadowRadius: CGFloat {
+        variant == .brand ? (isHovered ? 8 : 3) : 0
+    }
+
+    private var brandShadowY: CGFloat {
+        variant == .brand ? (isHovered ? 5 : 2) : 0
+    }
+}
+
+private struct ToolbarChromeModifier: ViewModifier {
+    let variant: ThemeHoverButtonStyle.Variant
+    let isHovered: Bool
+
+    func body(content: Content) -> some View {
+        switch variant {
+        case .toolbar:
+            content.themeGlassToolbarChrome(isHovered: isHovered)
+        case .brand:
+            content
+        }
     }
 }
 

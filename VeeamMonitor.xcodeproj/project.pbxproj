@@ -23,6 +23,15 @@
 		EE00001300000000000000C3 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001400000000000000C4 /* DesignTokens.swift */; };
 		EE00001500000000000000C5 /* ServerReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001600000000000000C6 /* ServerReachability.swift */; };
 		EE00001700000000000000C7 /* JobRuntimeEstimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00001800000000000000C8 /* JobRuntimeEstimation.swift */; };
+		FF00002100000000000000E1 /* SidebarLayoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002000000000000000E0 /* SidebarLayoutController.swift */; };
+		FF00002300000000000000E3 /* JobsToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002200000000000000E2 /* JobsToolbar.swift */; };
+		FF00002500000000000000E5 /* StatusFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002400000000000000E4 /* StatusFilterBar.swift */; };
+		FF00002700000000000000E7 /* ReportExportCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002600000000000000E6 /* ReportExportCoordinator.swift */; };
+		FF00002900000000000000E9 /* VeeamAPIService+Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002800000000000000E8 /* VeeamAPIService+Authentication.swift */; };
+		FF00002B00000000000000EB /* VeeamAPIService+Jobs.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002A00000000000000EA /* VeeamAPIService+Jobs.swift */; };
+		FF00002D00000000000000ED /* VeeamAPIService+FetchHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */; };
+		FF00002F00000000000000EF /* VeeamAPIService+Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00002E00000000000000EE /* VeeamAPIService+Support.swift */; };
+		FF00003100000000000000F1 /* LiquidGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF00003000000000000000F0 /* LiquidGlass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,11 +63,33 @@
 		EE00001400000000000000C4 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
 		EE00001600000000000000C6 /* ServerReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerReachability.swift; sourceTree = "<group>"; };
 		EE00001800000000000000C8 /* JobRuntimeEstimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobRuntimeEstimation.swift; sourceTree = "<group>"; };
+		FF00002000000000000000E0 /* SidebarLayoutController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarLayoutController.swift; sourceTree = "<group>"; };
+		FF00002200000000000000E2 /* JobsToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsToolbar.swift; sourceTree = "<group>"; };
+		FF00002400000000000000E4 /* StatusFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusFilterBar.swift; sourceTree = "<group>"; };
+		FF00002600000000000000E6 /* ReportExportCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportExportCoordinator.swift; sourceTree = "<group>"; };
+		FF00002800000000000000E8 /* VeeamAPIService+Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+Authentication.swift"; sourceTree = "<group>"; };
+		FF00002A00000000000000EA /* VeeamAPIService+Jobs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+Jobs.swift"; sourceTree = "<group>"; };
+		FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+FetchHelpers.swift"; sourceTree = "<group>"; };
+		FF00002E00000000000000EE /* VeeamAPIService+Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VeeamAPIService+Support.swift"; sourceTree = "<group>"; };
+		FF00003000000000000000F0 /* LiquidGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlass.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FF00000100000000000000D1 /* Exceptions for "VeeamMonitor" folder in "VeeamMonitor" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = BA8125312F737D2300CEC510 /* VeeamMonitor */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BA8125342F737D2300CEC510 /* VeeamMonitor */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FF00000100000000000000D1 /* Exceptions for "VeeamMonitor" folder in "VeeamMonitor" target */,
+			);
 			path = VeeamMonitor;
 			sourceTree = "<group>";
 		};
@@ -95,6 +126,15 @@
 				EE00001400000000000000C4 /* DesignTokens.swift */,
 				EE00001600000000000000C6 /* ServerReachability.swift */,
 				EE00001800000000000000C8 /* JobRuntimeEstimation.swift */,
+				FF00002000000000000000E0 /* SidebarLayoutController.swift */,
+				FF00002200000000000000E2 /* JobsToolbar.swift */,
+				FF00002400000000000000E4 /* StatusFilterBar.swift */,
+				FF00002600000000000000E6 /* ReportExportCoordinator.swift */,
+				FF00002800000000000000E8 /* VeeamAPIService+Authentication.swift */,
+				FF00002A00000000000000EA /* VeeamAPIService+Jobs.swift */,
+				FF00002C00000000000000EC /* VeeamAPIService+FetchHelpers.swift */,
+				FF00002E00000000000000EE /* VeeamAPIService+Support.swift */,
+				FF00003000000000000000F0 /* LiquidGlass.swift */,
 				DD00000400000000000000A4 /* ../Tests */,
 			);
 			sourceTree = "<group>";
@@ -229,6 +269,15 @@
 				EE00001300000000000000C3 /* DesignTokens.swift in Sources */,
 				EE00001500000000000000C5 /* ServerReachability.swift in Sources */,
 				EE00001700000000000000C7 /* JobRuntimeEstimation.swift in Sources */,
+				FF00002100000000000000E1 /* SidebarLayoutController.swift in Sources */,
+				FF00002300000000000000E3 /* JobsToolbar.swift in Sources */,
+				FF00002500000000000000E5 /* StatusFilterBar.swift in Sources */,
+				FF00002700000000000000E7 /* ReportExportCoordinator.swift in Sources */,
+				FF00002900000000000000E9 /* VeeamAPIService+Authentication.swift in Sources */,
+				FF00002B00000000000000EB /* VeeamAPIService+Jobs.swift in Sources */,
+				FF00002D00000000000000ED /* VeeamAPIService+FetchHelpers.swift in Sources */,
+				FF00002F00000000000000EF /* VeeamAPIService+Support.swift in Sources */,
+				FF00003100000000000000F1 /* LiquidGlass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,10 +448,7 @@
 				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Veeam Monitor";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				GENERATE_INFOPLIST_FILE = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -452,10 +498,7 @@
 				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				ENABLE_USER_SELECTED_FILES = readwrite;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Veeam Monitor";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				GENERATE_INFOPLIST_FILE = NO;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
