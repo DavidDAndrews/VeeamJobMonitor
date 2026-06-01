@@ -256,14 +256,7 @@ struct JobDetailView: View {
     }
 
     private var resultStyle: StatusStyle {
-        if job.isRunning { return Theme.style(for: .running) }
-        let text = resultCardText.lowercased()
-        if text.hasPrefix("running") { return Theme.style(for: .running) }
-        if text.contains("success") { return Theme.style(for: .success) }
-        if text.contains("fail") || text.contains("error") { return Theme.style(for: .failed) }
-        if text.contains("warning") { return Theme.style(for: .warning) }
-        if text.contains("disabled") { return Theme.style(for: .disabled) }
-        return Theme.style(for: .unknown)
+        jobResultBucket(for: job, contextResult: activeRunLogSummary?.result).style
     }
 
     private var resultColor: Color { resultStyle.color }
@@ -271,11 +264,12 @@ struct JobDetailView: View {
     private var resultIcon: String { resultStyle.icon }
 
     private var statusText: String {
-        if let state = activeRunLogSummary?.state, !state.isEmpty {
-            return state.capitalized
-        }
         if job.isRunning {
-            return "Running (\(max(job.progressPercent ?? 0, 0))%)"
+            let progress = max(job.progressPercent ?? 0, 0)
+            if let sessionState = activeSessionStateText {
+                return progress > 0 ? "\(sessionState) (\(progress)%)" : sessionState
+            }
+            return "Running (\(progress)%)"
         }
         if isDisabledStatus {
             return "Disabled"
@@ -284,13 +278,22 @@ struct JobDetailView: View {
         return job.status?.capitalized ?? "Active"
     }
 
+    private var activeSessionStateText: String? {
+        guard let summary = activeRunLogSummary,
+              summary.endedAt == nil,
+              VeeamJob.isActiveSessionState(summary.state) else {
+            return nil
+        }
+        return summary.state.capitalized
+    }
+
     private var statusColor: Color {
         if isDisabledStatus {
             return Theme.statusDisabled
         }
 
         switch job.status?.lowercased() {
-        case "running":
+        case "running", "starting", "stopping":
             return Theme.statusRunning
         case "inactive":
             return Theme.statusUnknown
@@ -302,7 +305,8 @@ struct JobDetailView: View {
     private var statusIcon: String {
         if isDisabledStatus { return "pause.circle.fill" }
         switch job.status?.lowercased() {
-        case "running": return "arrow.triangle.2.circlepath.circle.fill"
+        case "running", "starting", "stopping":
+            return "arrow.triangle.2.circlepath.circle.fill"
         case "inactive": return "moon.circle.fill"
         default: return "bolt.circle.fill"
         }
@@ -1086,8 +1090,8 @@ private struct JobRuntimeProgressBar: View {
                             LinearGradient(
                                 colors: [
                                     Theme.statusRunning,
-                                    Color(hex: 0x3B82F6),
-                                    Color(hex: 0x93C5FD)
+                                    Theme.statusRunning.opacity(0.82),
+                                    Theme.statusRunning.opacity(0.55)
                                 ],
                                 startPoint: .leading,
                                 endPoint: .trailing

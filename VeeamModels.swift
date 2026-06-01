@@ -24,7 +24,38 @@ struct VeeamJob: Identifiable {
     let driveSummary: String?
     let backupPoints: [VeeamBackupPoint]
 
-    var isRunning: Bool  { status?.lowercased() == "running" }
+    var isRunning: Bool {
+        if let status {
+            return Self.isActiveJobStatus(status)
+        }
+        if let progressPercent, progressPercent > 0, progressPercent < 100 {
+            return true
+        }
+        return false
+    }
+
+    static func isActiveJobStatus(_ status: String) -> Bool {
+        switch status.lowercased() {
+        case "running", "starting", "stopping":
+            return true
+        default:
+            return false
+        }
+    }
+
+    static func isActiveSessionState(_ state: String) -> Bool {
+        switch state.lowercased() {
+        case "starting", "working", "stopping", "pausing", "resuming",
+             "waitingtape", "postprocessing", "waitingrepository", "waitingslot":
+            return true
+        default:
+            return false
+        }
+    }
+    var isCopyJob: Bool {
+        jobType.localizedCaseInsensitiveContains("copy")
+    }
+
     var enabled: Bool    { isEnabled ?? true }
     var jobType: String  { type ?? "Backup" }
     var isDisabled: Bool { !enabled || status?.lowercased() == "disabled" }
