@@ -25,49 +25,15 @@ struct JobRowView: View {
         isSelected ? Theme.listRowSelectedPrimary : Theme.textPrimary
     }
 
-    private var secondaryColor: Color {
-        isSelected ? Theme.listRowSelectedSecondary : Theme.textSecondary
-    }
-
-    private var tertiaryColor: Color {
-        isSelected ? Theme.listRowSelectedTertiary : Theme.textTertiary
-    }
-
     var body: some View {
         HStack(spacing: Theme.Spacing.md) {
             statusDot
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(job.displayName)
-                    .font(Font.scaledText(.callout, scale: textScaleFactor, weight: .medium))
-                    .foregroundStyle(titleColor)
-                    .lineLimit(1)
-                    .layoutPriority(1)
-                HStack(spacing: 6) {
-                    Text(job.jobType)
-                        .font(Font.scaledText(.caption, scale: textScaleFactor))
-                        .foregroundStyle(secondaryColor)
-                    if let repositoryName = job.repositoryName, !repositoryName.isEmpty {
-                        bullet
-                        Text(repositoryName)
-                            .font(Font.scaledText(.caption, scale: textScaleFactor))
-                            .foregroundStyle(secondaryColor)
-                            .lineLimit(1)
-                    }
-                    if let objectsCount = job.objectsCount {
-                        bullet
-                        Text("\(objectsCount) objects")
-                            .font(Font.scaledText(.caption, scale: textScaleFactor))
-                            .foregroundStyle(secondaryColor)
-                    }
-                    if let last = job.lastRun {
-                        bullet
-                        Text(RelativeTimeFormatter.shared.localizedString(for: last, relativeTo: Date()))
-                            .font(Font.scaledText(.caption, scale: textScaleFactor))
-                            .foregroundStyle(tertiaryColor)
-                    }
-                }
-            }
+            Text(job.name)
+                .font(Font.scaledText(.callout, scale: textScaleFactor, weight: .medium))
+                .foregroundStyle(titleColor)
+                .lineLimit(1)
+                .layoutPriority(1)
 
             Spacer()
 
@@ -75,12 +41,6 @@ struct JobRowView: View {
         }
         .padding(.vertical, Theme.Spacing.xs)
         .opacity(job.enabled ? 1.0 : 0.6)
-    }
-
-    private var bullet: some View {
-        Text("•")
-            .font(Font.scaledText(.caption, scale: textScaleFactor))
-            .foregroundStyle(tertiaryColor)
     }
 
     private var statusDot: some View {

@@ -367,6 +367,55 @@ final class JobRuntimeEstimationTests: XCTestCase {
     }
 }
 
+final class VeeamJobSearchTests: XCTestCase {
+    private func makeJob(name: String, description: String?) -> VeeamJob {
+        VeeamJob(
+            id: "job-1",
+            name: name,
+            jobDescription: description,
+            type: "Backup",
+            status: nil,
+            lastResult: nil,
+            lastRun: nil,
+            nextRun: nil,
+            isEnabled: true,
+            scheduleDescription: nil,
+            vmStorageSize: nil,
+            repositoryName: nil,
+            objectsCount: nil,
+            progressPercent: nil,
+            processingRateBytesPerSecond: nil,
+            processedSizeBytes: nil,
+            readSizeBytes: nil,
+            transferredSizeBytes: nil,
+            driveSummary: nil,
+            backupPoints: []
+        )
+    }
+
+    func testMatchesDescriptionSubstringCaseInsensitive() {
+        let job = makeJob(name: "OPADSV0001", description: "Backed up from vCenter cluster A")
+        XCTAssertTrue(job.matchesNameOrDescriptionSearch("vcenter"))
+        XCTAssertTrue(job.matchesNameOrDescriptionSearch("VCENTER"))
+    }
+
+    func testMatchesNameSubstring() {
+        let job = makeJob(name: "OPADSV0001", description: nil)
+        XCTAssertTrue(job.matchesNameOrDescriptionSearch("opads"))
+    }
+
+    func testEmptyQueryMatchesAll() {
+        let job = makeJob(name: "Any", description: nil)
+        XCTAssertTrue(job.matchesNameOrDescriptionSearch(""))
+        XCTAssertTrue(job.matchesNameOrDescriptionSearch("   "))
+    }
+
+    func testNoMatchWhenNeitherFieldContainsQuery() {
+        let job = makeJob(name: "OPADSV0001", description: "Daily incremental")
+        XCTAssertFalse(job.matchesNameOrDescriptionSearch("vcenter"))
+    }
+}
+
 final class LiquidGlassTests: XCTestCase {
     func testPrefersSystemGlassWhenTransparencyAllowed() {
         if #available(macOS 26, *) {

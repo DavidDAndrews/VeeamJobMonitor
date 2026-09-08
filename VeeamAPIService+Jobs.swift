@@ -286,6 +286,18 @@ extension VeeamAPIService {
         jobs = updated
     }
 
+    /// Prefers per-job config description when present; otherwise uses `/jobs/states` description.
+    func resolvedJobDescription(config: JobConfig?, state: JobState) -> String? {
+        let candidates = [config?.description, state.description]
+        for candidate in candidates {
+            let trimmed = candidate?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            if !trimmed.isEmpty {
+                return trimmed
+            }
+        }
+        return nil
+    }
+
     func buildVeeamJob(
         from state: JobState,
         config: JobConfig?,
@@ -321,7 +333,7 @@ extension VeeamAPIService {
         return VeeamJob(
             id: state.id,
             name: state.name,
-            jobDescription: config?.description,
+            jobDescription: resolvedJobDescription(config: config, state: state),
             type: state.type,
             status: state.status,
             lastResult: state.lastResult,

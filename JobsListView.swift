@@ -33,18 +33,21 @@ struct JobsListView: View {
         api.jobs.filter { job in
             guard matchesBackupTypeFilter(job) else { return false }
 
-            if searchText.isEmpty {
-                return true
-            }
-
-            let matchesName = job.name.localizedCaseInsensitiveContains(searchText)
-            let matchesDescription = job.jobDescription?.localizedCaseInsensitiveContains(searchText) ?? false
-            let matchesType = job.jobType.localizedCaseInsensitiveContains(searchText)
-            let matchesResult = job.resultText.localizedCaseInsensitiveContains(searchText)
-            let matchesRepository = job.repositoryName?.localizedCaseInsensitiveContains(searchText) ?? false
-
-            return matchesName || matchesDescription || matchesType || matchesResult || matchesRepository
+            return matchesJobNameOrDescriptionSearch(job)
         }
+    }
+
+    /// True when search is empty or the query is contained in the job name or description (case-insensitive).
+    private func matchesJobNameOrDescriptionSearch(_ job: VeeamJob) -> Bool {
+        job.matchesNameOrDescriptionSearch(searchText)
+    }
+
+    private func reconcileSelectionAfterFilter() {
+        guard let selectedJobID else { return }
+        if filteredJobs.contains(where: { $0.id == selectedJobID }) {
+            return
+        }
+        self.selectedJobID = filteredJobs.first?.id
     }
 
     private var filteredJobs: [VeeamJob] {
@@ -53,7 +56,7 @@ struct JobsListView: View {
             let comparison: ComparisonResult
             switch leftPaneSort {
             case .jobName:
-                comparison = lhs.displayName.localizedCaseInsensitiveCompare(rhs.displayName)
+                comparison = lhs.name.localizedCaseInsensitiveCompare(rhs.name)
             case .status:
                 comparison = statusSortText(for: lhs).localizedCaseInsensitiveCompare(statusSortText(for: rhs))
             }
@@ -104,6 +107,12 @@ struct JobsListView: View {
         }
         .onChange(of: selectedJobID) { _, newValue in
             handleSelectedJobIDChanged(newValue)
+        }
+        .onChange(of: searchText) { _, newValue in
+            reconcileSelectionAfterFilter()
+            let query = newValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !query.isEmpty else { return }
+            Task { await api.ensureAllJobConfigsLoaded() }
         }
         .onChange(of: selectedStatusFilter) { _, _ in
             selectFirstJobInFilteredList()
@@ -177,13 +186,17 @@ struct JobsListView: View {
 
     private var sidebarPane: some View {
         VStack(spacing: 0) {
-            Text("Backup Jobs")
+            Text("Job Search")
                 .font(Font.scaledText(.title3, scale: textScaleFactor, weight: .semibold))
                 .foregroundStyle(Theme.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 12)
                 .padding(.top, 8)
                 .padding(.bottom, 4)
+
+            JobsSidebarSearchField(text: $searchText)
+                .padding(.horizontal, 12)
+                .padding(.bottom, 8)
 
             if !api.jobs.isEmpty {
                 StatusSummaryBar(
@@ -247,7 +260,6 @@ struct JobsListView: View {
                 onUserResize: { userHasManuallyResizedSidebar = true }
             )
         }
-        .searchable(text: $searchText, prompt: "Search jobs")
         .toolbar {
             mainToolbarContent
         }
@@ -274,7 +286,7 @@ struct JobsListView: View {
                 subtitle: paneLoadingSubtitle,
                 progressPercent: paneLoadingProgressPercent
             )
-        } else if let id = selectedJobID, let job = api.jobs.first(where: { $0.id == id }) {
+        } else if let id = selectedJobID, let job = filteredJobs.first(where: { $0.id == id }) {
             JobDetailView(job: job, api: api)
         } else {
             ContentUnavailableView(
@@ -361,11 +373,6 @@ struct JobsListView: View {
         }
     }
 
-    private func handleTextScaleChanged() {
-        ensureSidebarMeetsToolbarFloor()
-        applySidebarWidthForTextScale()
-    }
-
     private var canDecreaseTextScale: Bool {
         TextScalePreference.canDecrease(storedTextScaleFactor)
     }
@@ -381,30 +388,34 @@ struct JobsListView: View {
     private func decreaseTextScale() {
         guard canDecreaseTextScale else { return }
         storedTextScaleFactor = TextScalePreference.decreased(from: storedTextScaleFactor)
-        applySidebarWidthForTextScale()
+        handleTextScaleChanged()
     }
 
     private func increaseTextScale() {
         guard canIncreaseTextScale else { return }
         storedTextScaleFactor = TextScalePreference.increased(from: storedTextScaleFactor)
-        applySidebarWidthForTextScale()
+        handleTextScaleChanged()
     }
 
     private func resetTextScale() {
         guard canResetTextScale else { return }
         storedTextScaleFactor = TextScalePreference.defaultFactor
+        handleTextScaleChanged()
+    }
+
+    private func handleTextScaleChanged() {
+        ensureWindowFitsSidebarToolbarFloor()
         applySidebarWidthForTextScale()
     }
 
-    /// Upper bound for divider drag; content-based initial width is not capped here.
     private static let sidebarColumnMaxWidth: CGFloat = 2400
+    /// Upper bound for automatic sidebar sizing so the detail pane keeps room on laptop displays.
+    private static let sidebarAutomaticIdealCap: CGFloat = 440
 
-    /// Absolute lower bound for the jobs sidebar column; matches toolbar icon + search fit at the current text scale.
     private var sidebarColumnMinWidth: CGFloat {
         Self.sidebarColumnMinimumWidth(for: textScaleFactor)
     }
 
-    /// Floor width for manual divider drag and `navigationSplitViewColumnWidth(min:)`.
     private static func sidebarColumnMinimumWidth(for textScale: CGFloat) -> CGFloat {
         JobsToolbarLayout.minimumWidth(for: textScale)
     }
@@ -479,7 +490,7 @@ struct JobsListView: View {
                 Button("Enable Job") { Task { await api.enableJob(job) } }
                 Button("Disable Job") { Task { await api.disableJob(job) } }
             }
-            .help("Job: \(job.displayName). Current result: \(job.resultText). Right-click for job actions.")
+            .help("Job: \(job.name). Current result: \(job.resultText). Right-click for job actions.")
     }
 
     @MainActor
@@ -722,17 +733,13 @@ struct JobsListView: View {
         }
     }
 
-    /// One-shot auto-resize after job configs finish loading (descriptions included).
+    /// One-shot auto-resize after jobs load; uses job names only (not descriptions).
     private func scheduleInitialSidebarWidthAfterConfigs() {
         guard !hasAppliedInitialSidebarWidth, !userHasManuallyResizedSidebar, !api.jobs.isEmpty else { return }
 
         initialSidebarWidthTask?.cancel()
         initialSidebarWidthTask = Task { @MainActor in
-            await api.ensureAllJobConfigsLoaded()
-            guard !Task.isCancelled, !userHasManuallyResizedSidebar else { return }
             applyContentBasedSidebarWidth(markInitialApplied: false)
-
-            // NavigationSplitView may not have created its NSSplitView yet on first layout.
             try? await Task.sleep(nanoseconds: 200_000_000)
             guard !Task.isCancelled, !userHasManuallyResizedSidebar else { return }
             applyContentBasedSidebarWidth(markInitialApplied: true)
@@ -744,10 +751,10 @@ struct JobsListView: View {
         applyContentBasedSidebarWidth(markInitialApplied: false)
     }
 
-    /// Expands the outer window when a saved frame is narrower than the jobs toolbar floor plus detail pane.
+    /// Expands the outer window when a saved frame is narrower than the sidebar plus detail pane minimum.
     private func ensureWindowFitsSidebarToolbarFloor() {
-        let sidebarFloor = sidebarColumnMinWidth
-        let detailMinimum: CGFloat = 360
+        let sidebarFloor = max(sidebarIdealWidth, sidebarColumnMinWidth)
+        let detailMinimum: CGFloat = 520
         let requiredWidth = sidebarFloor + detailMinimum
 
         DispatchQueue.main.async {
@@ -760,7 +767,6 @@ struct JobsListView: View {
         }
     }
 
-    /// Keeps programmatic sidebar width at or above the toolbar floor (including before jobs load).
     private func ensureSidebarMeetsToolbarFloor(reapply: Bool = false) {
         let floor = sidebarColumnMinWidth
         var didChangeIdeal = false
@@ -773,7 +779,6 @@ struct JobsListView: View {
         }
     }
 
-    /// Re-applies sidebar width after the jobs pane is shown again so toolbar icons are never clipped.
     private func reapplySidebarWidthAfterShow() {
         ensureSidebarMeetsToolbarFloor(reapply: true)
         Task { @MainActor in
@@ -800,56 +805,41 @@ struct JobsListView: View {
         if markInitialApplied { hasAppliedInitialSidebarWidth = true }
     }
 
-    private static func rowSubtitle(for job: VeeamJob) -> String {
-        var parts = [job.jobType]
-        if let repositoryName = job.repositoryName, !repositoryName.isEmpty {
-            parts.append(repositoryName)
-        }
-        if let objectsCount = job.objectsCount {
-            parts.append("\(objectsCount) objects")
-        }
-        if let lastRun = job.lastRun {
-            parts.append(RelativeTimeFormatter.shared.localizedString(for: lastRun, relativeTo: Date()))
-        }
-        return parts.joined(separator: " • ")
-    }
-
-    /// Content width clamped to the toolbar floor so auto-resize never hides toolbar icons.
+    /// Content width clamped to toolbar floor and a laptop-friendly cap so the detail pane stays usable.
     private static func resolvedSidebarWidth(for jobs: [VeeamJob], textScale: CGFloat) -> CGFloat {
-        max(contentBasedSidebarWidth(for: jobs, textScale: textScale), JobsToolbarLayout.minimumWidth(for: textScale))
+        let floor = JobsToolbarLayout.minimumWidth(for: textScale)
+        let nameBased = contentBasedSidebarWidth(for: jobs, textScale: textScale)
+        let capped = min(nameBased, compactSidebarIdealCap(textScale: textScale))
+        return max(capped, floor)
     }
 
-    /// Width needed to show the widest job name + description (`displayName`) and row metadata without clipping.
-    private static func contentBasedSidebarWidth(for jobs: [VeeamJob], textScale: CGFloat = 1.0) -> CGFloat {
-        guard !jobs.isEmpty else { return 480 }
+    private static func compactSidebarIdealCap(textScale: CGFloat) -> CGFloat {
+        let screenWidth = NSScreen.main?.visibleFrame.width ?? 1280
+        let fractionCap = screenWidth * 0.40
+        return max(JobsToolbarLayout.minimumWidth(for: textScale), min(sidebarAutomaticIdealCap, fractionCap))
+    }
 
-        // Match JobRowView typography: callout medium title, caption subtitle, caption2 badge.
+    /// Width for the widest single-line job name and status badge (no description line).
+    private static func contentBasedSidebarWidth(for jobs: [VeeamJob], textScale: CGFloat = 1.0) -> CGFloat {
+        guard !jobs.isEmpty else { return 320 }
+
         let titleFont = sidebarMeasurementFont(style: .callout, weight: .medium, textScale: textScale)
-        let subtitleFont = sidebarMeasurementFont(style: .caption, weight: .regular, textScale: textScale)
         let badgeFont = sidebarMeasurementFont(style: .caption2, weight: .semibold, textScale: textScale)
 
         let maxTitleWidth = jobs.map {
-            ($0.displayName as NSString).size(withAttributes: [.font: titleFont]).width
-        }.max() ?? 260
-
-        let maxSubtitleWidth = jobs.map { job in
-            (rowSubtitle(for: job) as NSString).size(withAttributes: [.font: subtitleFont]).width
-        }.max() ?? 220
+            ($0.name as NSString).size(withAttributes: [.font: titleFont]).width
+        }.max() ?? 200
 
         let maxBadgeWidth = jobs.map { job in
             let badgeText = job.isRunning ? job.runningStatusText : job.resultText
             let textWidth = (badgeText as NSString).size(withAttributes: [.font: badgeFont]).width
-            // Icon (9pt scaled) + HStack spacing + horizontal badge padding (Theme.Spacing.sm each side).
             return textWidth + (9 * textScale) + 4 + (Theme.Spacing.sm * 2)
         }.max() ?? 88
 
-        let contentWidth = max(maxTitleWidth, maxSubtitleWidth)
-        // Status dot, HStack spacing (Theme.Spacing.md × 2), list insets, trailing badge, and layout fudge.
-        let chromeWidth: CGFloat = 18 + (Theme.Spacing.md * 2) + 24 + maxBadgeWidth + 20
-        return contentWidth + chromeWidth
+        let chromeWidth: CGFloat = 18 + (Theme.Spacing.md * 2) + 24 + maxBadgeWidth + 16
+        return maxTitleWidth + chromeWidth
     }
 
-    /// Maps app text scale to NSFont sizes aligned with JobRowView scaled typography.
     private static func sidebarMeasurementFont(style: ScaledTextStyle, weight: NSFont.Weight, textScale: CGFloat) -> NSFont {
         NSFont.systemFont(ofSize: style.baseSize * textScale, weight: weight)
     }

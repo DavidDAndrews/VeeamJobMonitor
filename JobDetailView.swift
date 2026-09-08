@@ -73,15 +73,12 @@ struct JobDetailView: View {
                             }
                         }
                         if hasHeaderMetadata {
-                            HStack(spacing: 8) {
-                                if let vmStorageSize = job.vmStorageSize {
-                                    HeaderChip(label: "VM Size \(vmStorageSize)")
+                            ViewThatFits(in: .horizontal) {
+                                HStack(spacing: 8) {
+                                    headerMetadataChips
                                 }
-                                if let totalStorageUsed = job.totalStorageUsedText {
-                                    HeaderChip(label: "Total Storage Used: \(totalStorageUsed)")
-                                }
-                                ForEach(backupPointSummaryChips, id: \.self) { label in
-                                    HeaderChip(label: label)
+                                VStack(alignment: .leading, spacing: 6) {
+                                    headerMetadataChips
                                 }
                             }
                             .padding(.top, 4)
@@ -165,12 +162,13 @@ struct JobDetailView: View {
                         Task { await loadDisks(for: point) }
                     }
                 )
-
-                Spacer()
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(20)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .navigationTitle("")
         .sheet(isPresented: $showDisksSheet) {
             RestorePointDisksSheet(
@@ -682,7 +680,22 @@ struct JobDetailView: View {
     }
 
     private var hasHeaderMetadata: Bool {
-        job.vmStorageSize != nil || !backupPointSummaryChips.isEmpty
+        job.vmStorageSize != nil
+            || job.totalStorageUsedText != nil
+            || !backupPointSummaryChips.isEmpty
+    }
+
+    @ViewBuilder
+    private var headerMetadataChips: some View {
+        if let vmStorageSize = job.vmStorageSize {
+            HeaderChip(label: "VM Size \(vmStorageSize)")
+        }
+        if let totalStorageUsed = job.totalStorageUsedText {
+            HeaderChip(label: "Total Storage Used: \(totalStorageUsed)")
+        }
+        ForEach(backupPointSummaryChips, id: \.self) { label in
+            HeaderChip(label: label)
+        }
     }
 
     private var activeRunLogSummary: JobRunLogSummary? {
@@ -743,6 +756,26 @@ private struct JobRunLogSummaryCard: View {
         (summary?.entries ?? []).filter { classifyStatus($0) == .failed }.count
     }
 
+    @ViewBuilder
+    private func logSummaryStateChips(summary: JobRunLogSummary) -> some View {
+        HeaderChip(label: "State: \(summary.state.capitalized)")
+        HeaderChip(label: "Result: \(summary.result.capitalized)")
+        if let startedAt = summary.startedAt {
+            HeaderChip(label: "Started: \(DetailDateFormatter.shared.string(from: startedAt))")
+        }
+        if let endedAt = summary.endedAt {
+            HeaderChip(label: "Ended: \(DetailDateFormatter.shared.string(from: endedAt))")
+        }
+    }
+
+    @ViewBuilder
+    private var logSummaryCountBadges: some View {
+        logCountBadge(text: "Success \(successCount)", color: Theme.statusSuccess)
+        logCountBadge(text: "Warning \(warningCount)", color: Theme.statusWarning)
+        logCountBadge(text: "Retry \(retryCount)", color: Theme.statusRunning)
+        logCountBadge(text: "Failed \(failedCount)", color: Theme.statusFailed)
+    }
+
     var body: some View {
         Group {
             if isLoading {
@@ -757,22 +790,22 @@ private struct JobRunLogSummaryCard: View {
                 .background(Theme.surfaceSecondary, in: RoundedRectangle(cornerRadius: Theme.Radius.medium))
             } else if let summary {
                 VStack(alignment: .leading, spacing: 10) {
-                    HStack(spacing: 8) {
-                        HeaderChip(label: "State: \(summary.state.capitalized)")
-                        HeaderChip(label: "Result: \(summary.result.capitalized)")
-                        if let startedAt = summary.startedAt {
-                            HeaderChip(label: "Started: \(DetailDateFormatter.shared.string(from: startedAt))")
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 8) {
+                            logSummaryStateChips(summary: summary)
                         }
-                        if let endedAt = summary.endedAt {
-                            HeaderChip(label: "Ended: \(DetailDateFormatter.shared.string(from: endedAt))")
+                        VStack(alignment: .leading, spacing: 6) {
+                            logSummaryStateChips(summary: summary)
                         }
                     }
 
-                    HStack(spacing: 8) {
-                        logCountBadge(text: "Success \(successCount)", color: Theme.statusSuccess)
-                        logCountBadge(text: "Warning \(warningCount)", color: Theme.statusWarning)
-                        logCountBadge(text: "Retry \(retryCount)", color: Theme.statusRunning)
-                        logCountBadge(text: "Failed \(failedCount)", color: Theme.statusFailed)
+                    ViewThatFits(in: .horizontal) {
+                        HStack(spacing: 8) {
+                            logSummaryCountBadges
+                        }
+                        VStack(alignment: .leading, spacing: 6) {
+                            logSummaryCountBadges
+                        }
                     }
 
                     if summary.entries.isEmpty {
@@ -986,7 +1019,7 @@ private struct SectionHeader: View {
     }
 }
 
-/// Lays out info cards in a single row with equal width; taller cards grow vertically while tops stay aligned.
+/// Lays out info cards in a row when space allows; stacks vertically on narrow detail panes (e.g. MacBook).
 private struct EqualWidthInfoCardRow<Content: View>: View {
     private let spacing: CGFloat = 10
     @ViewBuilder private let content: Content
@@ -996,8 +1029,13 @@ private struct EqualWidthInfoCardRow<Content: View>: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: spacing) {
-            content
+        ViewThatFits(in: .horizontal) {
+            HStack(alignment: .top, spacing: spacing) {
+                content
+            }
+            VStack(alignment: .leading, spacing: spacing) {
+                content
+            }
         }
     }
 }
@@ -1140,6 +1178,8 @@ private struct BackupPointsCard: View {
     @Environment(\.textScaleFactor) private var textScaleFactor
     @Environment(\.detailTextBonus) private var detailTextBonus
 
+    fileprivate static let recoveryPointColumnWidth: CGFloat = 252
+
     private enum SortColumn {
         case recoveryPoint
         case date
@@ -1179,65 +1219,72 @@ private struct BackupPointsCard: View {
                         .stroke(Theme.separator, lineWidth: 0.5)
                 )
         } else {
-            VStack(spacing: 10) {
-                ForEach(groupedPoints, id: \.setName) { group in
-                    VStack(spacing: 0) {
-                        HStack {
-                            Image(systemName: "doc.text.fill")
-                                .font(Font.scaledText(.caption, scale: textScaleFactor, baselineOffset: detailTextBonus))
-                                .foregroundStyle(Theme.brand)
-                            Text(groupTitle(for: group))
-                                .font(Font.scaledText(.subheadline, scale: textScaleFactor, weight: .semibold, baselineOffset: detailTextBonus))
-                                .foregroundStyle(Theme.textPrimary)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 10)
-                        .background(Theme.brandTint)
+            ScrollView(.horizontal, showsIndicators: true) {
+                VStack(spacing: 10) {
+                    ForEach(groupedPoints, id: \.setName) { group in
+                        VStack(spacing: 0) {
+                            HStack {
+                                Image(systemName: "doc.text.fill")
+                                    .font(Font.scaledText(.caption, scale: textScaleFactor, baselineOffset: detailTextBonus))
+                                    .foregroundStyle(Theme.brand)
+                                Text(groupTitle(for: group))
+                                    .font(Font.scaledText(.subheadline, scale: textScaleFactor, weight: .semibold, baselineOffset: detailTextBonus))
+                                    .foregroundStyle(Theme.textPrimary)
+                                    .lineLimit(2)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 10)
+                            .background(Theme.brandTint)
 
-                        HStack(spacing: 0) {
-                            sortableHeader("Recovery Point", width: 360, column: .recoveryPoint)
-                            sortableHeader("Date", width: 160, column: .date)
-                            sortableHeader("Backup Size", width: 120, column: .backupSize)
-                            sortableHeader("Type", width: 110, column: .type)
-                            sortableHeader("Status", width: 70, column: .status)
-                            sortableHeader("Retention", width: 80, column: .retention)
-                            sortableHeader("Expiration", width: 140, column: .expiration)
-                            sortableHeader("Repository", width: 180, column: .repository)
-                        }
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 8)
-                        .background(Theme.surfaceSecondary)
+                            HStack(spacing: 0) {
+                                sortableHeader("Recovery Point", width: Self.recoveryPointColumnWidth, column: .recoveryPoint)
+                                sortableHeader("Date", width: 160, column: .date)
+                                sortableHeader("Backup Size", width: 120, column: .backupSize)
+                                sortableHeader("Type", width: 110, column: .type)
+                                sortableHeader("Status", width: 70, column: .status)
+                                sortableHeader("Retention", width: 80, column: .retention)
+                                sortableHeader("Expiration", width: 140, column: .expiration)
+                                sortableHeader("Repository", width: 180, column: .repository)
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .background(Theme.surfaceSecondary)
 
-                        ForEach(Array(group.points.enumerated()), id: \.element.id) { index, point in
-                            BackupPointRow(
-                                point: point,
-                                isSelected: selectedPointID == point.id,
-                                onSelect: onSelectPoint,
-                                onViewDisks: onViewDisks
-                            )
-                                .padding(.leading, 12)
-                                .overlay(alignment: .leading) {
-                                    Rectangle()
-                                        .fill(Theme.separator)
-                                        .frame(width: 2)
+                            ForEach(Array(group.points.enumerated()), id: \.element.id) { index, point in
+                                BackupPointRow(
+                                    point: point,
+                                    isSelected: selectedPointID == point.id,
+                                    onSelect: onSelectPoint,
+                                    onViewDisks: onViewDisks
+                                )
+                                    .padding(.leading, 12)
+                                    .overlay(alignment: .leading) {
+                                        Rectangle()
+                                            .fill(Theme.separator)
+                                            .frame(width: 2)
+                                    }
+
+                                if index < group.points.count - 1 {
+                                    Divider().padding(.leading, 14)
                                 }
-
-                            if index < group.points.count - 1 {
-                                Divider().padding(.leading, 14)
                             }
                         }
+                        .background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.Radius.medium))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: Theme.Radius.medium)
+                                .stroke(Theme.separator, lineWidth: 0.5)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.medium))
                     }
-                    .background(Theme.surface, in: RoundedRectangle(cornerRadius: Theme.Radius.medium))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: Theme.Radius.medium)
-                            .stroke(Theme.separator, lineWidth: 0.5)
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.medium))
                 }
+                .frame(minWidth: Self.tableContentMinWidth, alignment: .leading)
             }
         }
     }
+
+    private static let tableContentMinWidth: CGFloat = 1112
 
     private func groupTitle(for group: (setName: String, points: [VeeamBackupPoint])) -> String {
         let machineName = group.points.first?.name ?? displayMachineName(from: group.setName)
@@ -1320,7 +1367,7 @@ private struct BackupPointRow: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            cell(point.name, width: 360)
+            cell(point.name, width: BackupPointsCard.recoveryPointColumnWidth)
             cell(BackupPointDateFormatter.shared.string(from: point.creationTime), width: 160)
             cell(point.backupSizeText, width: 120)
             cell(displayType, width: 110)

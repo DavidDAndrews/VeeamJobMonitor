@@ -82,6 +82,25 @@ struct VeeamJob: Identifiable {
         return "\(name) [\(trimmed)]"
     }
 
+    /// True when `query` is a non-empty substring of the job name or description (case-insensitive).
+    func matchesNameOrDescriptionSearch(_ query: String) -> Bool {
+        let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedQuery.isEmpty else { return true }
+
+        if name.localizedCaseInsensitiveContains(trimmedQuery) {
+            return true
+        }
+
+        if let jobDescription = jobDescription?
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !jobDescription.isEmpty,
+           jobDescription.localizedCaseInsensitiveContains(trimmedQuery) {
+            return true
+        }
+
+        return false
+    }
+
     var totalStorageUsedText: String? {
         let totalBytes = backupPoints.reduce(Int64(0)) { partial, point in
             partial + max(point.backupSizeBytes ?? 0, 0)

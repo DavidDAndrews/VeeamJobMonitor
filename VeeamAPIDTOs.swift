@@ -5,6 +5,7 @@ import Foundation
 struct JobState: Decodable {
     let id: String
     let name: String
+    let description: String?
     let type: String?
     let status: String?
     let lastResult: String?
@@ -30,6 +31,48 @@ struct JobState: Decodable {
         let processedSize: Int64?
         let readSize: Int64?
         let transferredSize: Int64?
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case description
+        case Description
+        case type
+        case status
+        case lastResult
+        case lastRun
+        case nextRun
+        case nextRunPolicy
+        case runAfterJob
+        case isEnabled
+        case repositoryName
+        case objectsCount
+        case progressPercent
+        case sessionProgress
+        case sessionId
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        description =
+            try container.decodeIfPresent(String.self, forKey: .description) ??
+            container.decodeIfPresent(String.self, forKey: .Description)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
+        status = try container.decodeIfPresent(String.self, forKey: .status)
+        lastResult = try container.decodeIfPresent(String.self, forKey: .lastResult)
+        lastRun = try container.decodeIfPresent(Date.self, forKey: .lastRun)
+        nextRun = try container.decodeIfPresent(Date.self, forKey: .nextRun)
+        nextRunPolicy = try container.decodeIfPresent(String.self, forKey: .nextRunPolicy)
+        runAfterJob = try container.decodeIfPresent(RunAfterJob.self, forKey: .runAfterJob)
+        isEnabled = try container.decodeIfPresent(Bool.self, forKey: .isEnabled)
+        repositoryName = try container.decodeIfPresent(String.self, forKey: .repositoryName)
+        objectsCount = try container.decodeIfPresent(Int.self, forKey: .objectsCount)
+        progressPercent = try container.decodeIfPresent(Int.self, forKey: .progressPercent)
+        sessionProgress = try container.decodeIfPresent(SessionProgress.self, forKey: .sessionProgress)
+        sessionId = try container.decodeIfPresent(String.self, forKey: .sessionId)
     }
 }
 

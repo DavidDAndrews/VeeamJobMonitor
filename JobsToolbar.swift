@@ -1,22 +1,62 @@
 import SwiftUI
 
 enum JobsToolbarLayout {
-    /// Floor width for the jobs sidebar toolbar row (icon buttons + search) so controls are not clipped.
+    /// Horizontal padding on each side of a toolbar icon (`ThemeHoverButtonStyle`, toolbar variant).
+    static let toolbarButtonHorizontalInset: CGFloat = 6
+    /// Spacing between icon buttons inside a toolbar cluster `HStack`.
+    static let toolbarClusterButtonSpacing: CGFloat = 6
+    /// Gap between the primary (refresh/export/share) and utility toolbar clusters.
+    static let toolbarInterClusterSpacing: CGFloat = 10
+    /// Navigation split sidebar toggle + outer toolbar edge inset in the sidebar column.
+    static let toolbarChromeWidth: CGFloat = 36
+
+    /// Floor width for the jobs sidebar column so unified-toolbar icon buttons are not clipped.
     static func minimumWidth(for textScale: CGFloat) -> CGFloat {
-        // Keep in sync with toolbar ToolbarItem list, ToolbarIcon, ThemeHoverButtonStyle, and `.searchable`.
-        let iconWidth: CGFloat = 13 * textScale
-        let buttonHorizontalPadding: CGFloat = 12
-        let iconButtonWidth = iconWidth + buttonHorizontalPadding
-        let toolbarItemSpacing: CGFloat = 8
-        let toolbarPlacementGroupSpacing: CGFloat = 16
-        let searchFieldMinimumWidth: CGFloat = 160
-        let toolbarHorizontalMargin: CGFloat = 24
-        let sidebarToggleWidth: CGFloat = 36
-        let toolbarButtonCount = 9
-        let buttonsRowWidth = iconButtonWidth * CGFloat(toolbarButtonCount)
-            + toolbarItemSpacing * CGFloat(toolbarButtonCount - 1)
-            + toolbarPlacementGroupSpacing
-        return sidebarToggleWidth + buttonsRowWidth + searchFieldMinimumWidth + toolbarHorizontalMargin
+        let iconButtonWidth = (13 * textScale) + (toolbarButtonHorizontalInset * 2)
+        let primaryClusterWidth =
+            (iconButtonWidth * 3) + (toolbarClusterButtonSpacing * 2)
+        let utilityClusterWidth =
+            (iconButtonWidth * 6) + (toolbarClusterButtonSpacing * 5)
+        return toolbarChromeWidth
+            + primaryClusterWidth
+            + toolbarInterClusterSpacing
+            + utilityClusterWidth
+    }
+}
+
+/// Left-aligned job search field in the sidebar column (not the unified toolbar).
+struct JobsSidebarSearchField: View {
+    @Binding var text: String
+    @Environment(\.textScaleFactor) private var textScaleFactor
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .font(Font.scaledSystem(size: 13, weight: .medium, scale: textScaleFactor))
+                .foregroundStyle(Theme.textTertiary)
+            TextField("Search by job name or description", text: $text)
+                .textFieldStyle(.plain)
+                .font(Font.scaledText(.callout, scale: textScaleFactor))
+            if !text.isEmpty {
+                Button {
+                    text = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(Font.scaledSystem(size: 13, scale: textScaleFactor))
+                        .foregroundStyle(Theme.textTertiary)
+                }
+                .buttonStyle(.plain)
+                .help("Clear search")
+            }
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Theme.surfaceSecondary, in: RoundedRectangle(cornerRadius: Theme.Radius.small))
+        .overlay(
+            RoundedRectangle(cornerRadius: Theme.Radius.small)
+                .stroke(Theme.separator, lineWidth: 0.5)
+        )
     }
 }
 
@@ -44,8 +84,8 @@ struct JobsPrimaryToolbarCluster: View {
     let onShare: () -> Void
 
     var body: some View {
-        JobsToolbarGlassCluster {
-            HStack(spacing: 8) {
+        JobsToolbarGlassCluster(spacing: JobsToolbarLayout.toolbarClusterButtonSpacing) {
+            HStack(spacing: JobsToolbarLayout.toolbarClusterButtonSpacing) {
                 Button(action: onRefresh) {
                     ToolbarIcon(symbol: "arrow.clockwise")
                 }
@@ -84,8 +124,8 @@ struct JobsUtilityToolbarCluster: View {
     let onQuit: () -> Void
 
     var body: some View {
-        JobsToolbarGlassCluster {
-            HStack(spacing: 8) {
+        JobsToolbarGlassCluster(spacing: JobsToolbarLayout.toolbarClusterButtonSpacing) {
+            HStack(spacing: JobsToolbarLayout.toolbarClusterButtonSpacing) {
                 Button(action: onDecreaseTextScale) {
                     ToolbarIcon(symbol: "textformat.size.smaller")
                 }
