@@ -11,3 +11,27 @@ default.profraw
 # Xcode user state
 *.xcuserstate
 xcuserdata/
+
+# Keep OS junk, editor cruft and secrets out of the repo.
+# macOS
+._*
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+Icon?
+# Windows
+Thumbs.db
+desktop.ini
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+# Secrets
+.env
+.env.*
+!.env.example
+# Dependencies and logs
+node_modules/
+*.log
